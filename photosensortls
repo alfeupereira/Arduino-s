@@ -1,0 +1,81 @@
+// Identificando Semaforos
+int s1 = 3;
+int s2 = 2;
+
+// Valor dos sensores
+int vs1 = 0;
+int vs2 = 0;
+
+// Pin semaforo 1
+int pr1 = 11;
+int py1 = 12;
+int pg1 = 13;
+
+// Pin semaforo 2
+int pr2 = 7;
+int py2 = 6;
+int pg2 = 5;
+
+
+void setup() {
+  for (int i = 5; i <= 13; i++)  {
+    pinMode (i, OUTPUT);
+  }
+  pinMode(s1, INPUT);
+  pinMode(s2, INPUT);
+  Serial.begin(9600);
+  }
+  
+void loop() {
+  vs1 = digitalRead(s1);
+  vs2 = digitalRead(s2);
+
+  Serial.print("Semaforo 1: ");
+  Serial.println(vs1);
+  Serial.print("Semaforo 2: ");
+  Serial.println(vs2);
+  Serial.println();
+  
+  int ts1 = 3000;
+  int ts12 = 400;
+  
+  int ts2= 3000;
+  int ts21 = 400;
+
+  if (vs1 == HIGH && vs2 == LOW) {
+  	Serial.println("Aumentar Semaforo 1");
+    ts1 = ts1 * 2;
+    ts12 = ts12 * 2;
+    
+  } else if (vs1 == LOW && vs2 == HIGH) {
+    Serial.println("Aumentar Semaforo 2");
+    ts2 = ts2 * 2;
+  	ts21 = ts21 * 2;
+  }
+  
+  semaforo1(ts1, ts12);
+  semaforo2(ts2, ts21);
+  
+}
+
+void semaforo1(int t1, int t2) {
+  digitalWrite(pr1, HIGH);
+  digitalWrite(pg2, HIGH);
+  delay(t1);
+  digitalWrite(pg2, LOW);
+  digitalWrite(py2, HIGH);
+  delay(t2);
+  digitalWrite(pr1, LOW);
+  digitalWrite(py2, LOW);
+}
+
+void semaforo2(int t1, int t2) {
+  digitalWrite(pr2, HIGH);
+  digitalWrite(pg1, HIGH);
+  delay(t1);
+  digitalWrite(pg1, LOW);
+  digitalWrite(py1, HIGH);
+  delay(t2);
+  digitalWrite(pr2, LOW);
+  digitalWrite(py1, LOW);
+}
